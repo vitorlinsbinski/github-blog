@@ -10,8 +10,8 @@ export function Router() {
       <Route path="/" element={<DefaultLayout />}>
         <Route path="/" element={<Home />}></Route>
 
-        <Route path=":username" element={<Profile />}></Route>
-        <Route path=":username/:postId" element={<Post />}></Route>
+        <Route path=":username/:repo" element={<Profile />}></Route>
+        <Route path=":username/:repo/:issue" element={<Post />}></Route>
       </Route>
     </Routes>
   );

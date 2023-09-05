@@ -1,7 +1,16 @@
 import styled from "styled-components";
-import { textLink, textM } from "../../styles/typography";
+import {
+  textLink,
+  textM,
+  textS,
+  titleL,
+  titleM,
+  titleS,
+} from "../../styles/typography";
 
-export const ProfileSection = styled.section``;
+export const ProfileSection = styled.section`
+  padding-bottom: 4rem;
+`;
 
 export const ProfileCard = styled.div`
   background-color: ${(props) => props.theme["base-profile"]};
@@ -11,7 +20,7 @@ export const ProfileCard = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  margin-top: -8.3rem;
+  margin-top: -8rem;
   z-index: 1;
   position: relative;
 
@@ -30,6 +39,13 @@ export const ProfileCard = styled.div`
       justify-content: space-between;
 
       margin-bottom: 0.8rem;
+
+      header {
+        h1 {
+          ${titleL}
+          color: ${(props) => props.theme["base-title"]};
+        }
+      }
 
       a {
         color: ${(props) => props.theme.blue};
@@ -78,8 +94,78 @@ export const ProfileCard = styled.div`
   }
 `;
 
-export const SearchPostForm = styled.form``;
+export const SearchPostForm = styled.form`
+  margin-top: 7.2rem;
 
-export const Posts = styled.div``;
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.2rem;
 
-export const PostCard = styled.div``;
+    label {
+      color: ${(props) => props.theme["base-subtitle"]};
+      ${titleS}
+    }
+
+    span {
+      color: ${(props) => props.theme["base-span"]};
+      ${textS}
+    }
+  }
+`;
+
+export const SearchInputForm = styled.input`
+  width: 100%;
+  height: 5rem;
+  padding: 1.6rem;
+  border-radius: 6px;
+  background-color: ${(props) => props.theme["base-input"]};
+  border: none;
+  ${textM}
+  color: ${(props) => props.theme["base-text"]};
+  border: 1px solid ${(props) => props.theme["base-border"]};
+
+  &::placeholder {
+    color: ${(props) => props.theme["base-label"]};
+  }
+`;
+
+export const Posts = styled.div`
+  margin-top: 4.8rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3.2rem;
+`;
+
+export const PostCard = styled.div`
+  background-color: ${(props) => props.theme["base-post"]};
+  padding: 3.2rem;
+  width: 100%;
+  max-width: 41.6rem;
+  border-radius: 10px;
+
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+
+    h3 {
+      color: ${(props) => props.theme["base-title"]};
+      ${titleM}
+      width: 100%;
+      max-width: 28.3rem;
+    }
+
+    span {
+      color: ${(props) => props.theme["base-span"]};
+      ${textS}
+    }
+  }
+
+  p {
+    color: ${(props) => props.theme["base-text"]};
+    ${textM}
+  }
+`;

@@ -1,15 +1,15 @@
 import { ContainerBox } from "../../styles/container";
-import { ButtonSubmit, FormArea, InputArea } from "./styles";
+import { ButtonSubmit, FormArea, InputArea, InputsContainer } from "./styles";
 
 export function Home() {
   return (
     <FormArea>
       <ContainerBox>
-        <label htmlFor="profile">
-          Digite seu perfil do github (ex: meu_github)
-        </label>
+        <InputsContainer>
+          <label htmlFor="profile">
+            Digite seu perfil do github (ex: vitorlinsbinski)
+          </label>
 
-        <div>
           <InputArea
             type="text"
             name="profile"
@@ -17,8 +17,19 @@ export function Home() {
             placeholder="Digite seu perfil"
           />
 
+          <label htmlFor="repository">
+            Digite o repositório (ex: github-blog)
+          </label>
+
+          <InputArea
+            type="text"
+            name="repository"
+            id="repository"
+            placeholder="Digite o portifólio"
+          />
+
           <ButtonSubmit type="submit">Buscar</ButtonSubmit>
-        </div>
+        </InputsContainer>
       </ContainerBox>
     </FormArea>
   );

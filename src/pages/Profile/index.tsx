@@ -5,6 +5,7 @@ import {
   ProfileSection,
   SearchPostForm,
   ProfileCard,
+  SearchInputForm,
 } from "./styles";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -58,10 +59,72 @@ export function Profile() {
           </div>
         </ProfileCard>
 
-        <SearchPostForm></SearchPostForm>
+        <SearchPostForm>
+          <div className="top">
+            <label htmlFor="searchInput">Publicações</label>
+            <span>6 publicações</span>
+          </div>
+
+          <SearchInputForm
+            type="text"
+            name="searchInput"
+            id=""
+            placeholder="Buscar conteúdo"
+          />
+        </SearchPostForm>
 
         <Posts>
-          <PostCard></PostCard>
+          <PostCard>
+            <header>
+              <h3>JavaScript data types and data structures</h3>
+              <span>Há 1 dia</span>
+            </header>
+
+            <p>
+              Programming languages all have built-in data structures, but these
+              often differ from one language to another. This article attempts
+              to list the built-in data structures available in...
+            </p>
+          </PostCard>
+
+          <PostCard>
+            <header>
+              <h3>JavaScript data types and data structures</h3>
+              <span>Há 1 dia</span>
+            </header>
+
+            <p>
+              Programming languages all have built-in data structures, but these
+              often differ from one language to another. This article attempts
+              to list the built-in data structures available in...
+            </p>
+          </PostCard>
+
+          <PostCard>
+            <header>
+              <h3>JavaScript data types and data structures</h3>
+              <span>Há 1 dia</span>
+            </header>
+
+            <p>
+              Programming languages all have built-in data structures, but these
+              often differ from one language to another. This article attempts
+              to list the built-in data structures available in...
+            </p>
+          </PostCard>
+
+          <PostCard>
+            <header>
+              <h3>JavaScript data types and data structures</h3>
+              <span>Há 1 dia</span>
+            </header>
+
+            <p>
+              Programming languages all have built-in data structures, but these
+              often differ from one language to another. This article attempts
+              to list the built-in data structures available in...
+            </p>
+          </PostCard>
         </Posts>
       </ContainerBox>
     </ProfileSection>

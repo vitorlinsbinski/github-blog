@@ -3,21 +3,28 @@ import styled from "styled-components";
 import { titleS } from "../../styles/typography";
 
 export const FormArea = styled.form`
-  margin-top: -6.5rem;
+  margin-top: -9.5rem;
   z-index: 1;
   position: relative;
+
   & > div {
     label {
       ${titleS}
     }
 
     & > div {
-      display: flex;
-      align-items: center;
-      justify-content: center;
       margin-top: 1.2rem;
     }
   }
+`;
+
+export const InputsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  width: 100%;
+  max-width: 50rem;
+  margin: 0 auto;
 `;
 
 export const InputArea = styled.input`
@@ -40,7 +47,7 @@ export const ButtonSubmit = styled.button`
   border: 1px solid ${(props) => props.theme.blue};
   background-color: transparent;
   border-radius: 6px;
-  width: 9rem;
+  width: 100%;
   color: ${(props) => props.theme.blue};
   cursor: pointer;
 
