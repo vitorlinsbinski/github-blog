@@ -145,6 +145,15 @@ export const PostCard = styled.div`
   max-width: 41.6rem;
   border-radius: 10px;
 
+  max-height: 26rem;
+
+  overflow: hidden;
+
+  &:hover {
+    border: 1px solid ${(props) => props.theme["base-label"]};
+    padding: 3.1rem;
+  }
+
   header {
     display: flex;
     align-items: flex-start;

@@ -1,11 +1,5 @@
 import styled from "styled-components";
-import {
-  textLink,
-  textLink,
-  textM,
-  titleL,
-  titleM,
-} from "../../styles/typography";
+import { textLink, textM, titleL, titleM } from "../../styles/typography";
 
 export const PostSection = styled.section``;
 
@@ -83,7 +77,7 @@ export const PostContent = styled.div`
   h2,
   h3 {
     margin-top: 4rem;
-    color: ${(props) => props.theme["base-title"]};
+    color: ${(props) => props.theme["blue"]};
   }
 
   h1 {

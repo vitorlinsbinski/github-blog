@@ -6,13 +6,17 @@ import { BrowserRouter } from "react-router-dom";
 
 import { Router } from "./Router";
 
+import { UserProvider } from "./contexts/ProfileContext";
+
 export function App() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyle />
 
       <BrowserRouter>
-        <Router></Router>
+        <UserProvider>
+          <Router></Router>
+        </UserProvider>
       </BrowserRouter>
     </ThemeProvider>
   );
