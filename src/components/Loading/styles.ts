@@ -32,11 +32,9 @@ export const ImgBox = styled.div`
 
   @keyframes LoadingAnimation {
     from {
-      transform: scale(1);
       opacity: 0.5;
     }
     to {
-      transform: scale(1.5);
       opacity: 1;
     }
   }

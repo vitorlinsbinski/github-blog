@@ -16,91 +16,55 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { Link, useParams, useLocation } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
-import axios from "axios";
 import { Loading } from "../../components/Loading";
 import { UserContext } from "../../contexts/ProfileContext";
 
-const BASE_PROFILE_GITHUB_URL = "https://api.github.com/users";
-const BASE_ISSUE_GITHUB_URL = "https://api.github.com/search/issues?q=repo:";
+import * as zod from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-interface ProfileInfoType {
-  login: string;
-  id: number;
-  avatar_url: string;
-  url: string;
-  html_url: string;
-  name: string;
-  company: string;
-  bio: string;
-  followers: string;
-}
+const searchIssueFormSchema = zod.object({
+  query: zod.string(),
+});
 
-interface IssueType {
-  number: string;
-  title: string;
-  body: string;
-}
+type searchIssueFormInput = zod.infer<typeof searchIssueFormSchema>;
 
 export function Profile() {
-  const { username, repository } = useParams();
+  const { username, repository } = useParams<{
+    username: string;
+    repository: string;
+  }>();
 
-  const [userDetails, setUserDetails] = useState<ProfileInfoType>();
-
-  const [issues, setIssues] = useState<IssueType[]>([]);
-
-  const [issuesAmount, setIssuesAmount] = useState(0);
-
-  const { isLoading, showLoading, removeLoading } = useContext(UserContext);
+  const { isLoading, fetchIssues, fetchIssueQuery } = useContext(UserContext);
 
   const { pathname } = useLocation();
 
-  async function fetchUserDetails() {
-    showLoading();
+  const { fetchUserDetails, userDetails, issues, issuesAmount } =
+    useContext(UserContext);
 
-    try {
-      const response = await axios.get(
-        `${BASE_PROFILE_GITHUB_URL}/${username}`
-      );
-      setUserDetails(response.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      removeLoading();
-    }
-  }
+  const { register, handleSubmit, reset } = useForm<searchIssueFormInput>({
+    resolver: zodResolver(searchIssueFormSchema),
+  });
 
-  async function fetchIssues() {
-    showLoading();
-
-    try {
-      const response = await axios.get(
-        `${BASE_ISSUE_GITHUB_URL}${username}/${repository}`
-      );
-
-      const issuesData = response.data.items.map(
-        ({ title, body, number }: IssueType) => {
-          return {
-            title,
-            body,
-            number,
-          };
-        }
-      );
-
-      setIssues(issuesData);
-      setIssuesAmount(response.data.total_count);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      removeLoading();
+  function handleSearchIssueForm(data: searchIssueFormInput) {
+    if (username && repository) {
+      fetchIssueQuery(username, repository, data.query);
     }
   }
 
   useEffect(() => {
-    fetchUserDetails();
-    fetchIssues();
+    if (userDetails) {
+      if (username && repository) {
+        fetchUserDetails(username);
+        fetchIssues(username, repository);
+        console.log(userDetails);
+      }
+    } else {
+      console.log("oi");
+      return;
+    }
   }, []);
 
   return (
@@ -110,7 +74,7 @@ export function Profile() {
       ) : (
         <ProfileSection>
           <ContainerBox>
-            {userDetails && (
+            {userDetails.avatar_url ? (
               <ProfileCard>
                 <img
                   src={userDetails.avatar_url}
@@ -148,11 +112,13 @@ export function Profile() {
                   </footer>
                 </div>
               </ProfileCard>
+            ) : (
+              <div>Limite de requisições diárias esgotado...</div>
             )}
 
             {issues && (
               <>
-                <SearchPostForm>
+                <SearchPostForm onSubmit={handleSubmit(handleSearchIssueForm)}>
                   <div className="top">
                     <label htmlFor="searchInput">Publicações</label>
                     <span>{issuesAmount} publicações</span>
@@ -163,6 +129,7 @@ export function Profile() {
                     name="searchInput"
                     id=""
                     placeholder="Buscar conteúdo"
+                    {...register("query")}
                   />
                 </SearchPostForm>
 
