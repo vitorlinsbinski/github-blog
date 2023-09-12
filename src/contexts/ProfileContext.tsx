@@ -85,7 +85,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
 
   async function fetchIssues(username: string, repository: string) {
     showLoading();
-
+    setIssues([]);
     try {
       const { data } = await api.get(
         `/search/issues?q=repo:${username}/${repository}`

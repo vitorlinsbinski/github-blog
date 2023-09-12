@@ -92,6 +92,33 @@ export const ProfileCard = styled.div`
       }
     }
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    margin-top: -7rem;
+
+    img {
+      margin-top: -6rem;
+    }
+
+    .about {
+      margin-left: 0;
+
+      header {
+        flex-direction: column;
+        margin-top: 1.6rem;
+        margin-bottom: 2rem;
+      }
+
+      footer {
+        justify-content: center;
+      }
+    }
+  }
 `;
 
 export const SearchPostForm = styled.form`
@@ -136,6 +163,11 @@ export const Posts = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 3.2rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
 `;
 
 export const PostCard = styled.div`
@@ -175,6 +207,39 @@ export const PostCard = styled.div`
 
   p {
     color: ${(props) => props.theme["base-text"]};
+    ${textM}
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+
+    header {
+      h3 {
+        max-width: 22.3rem;
+      }
+    }
+  }
+`;
+
+export const NoIssueFoundArea = styled.div`
+  margin-top: 5.2rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+
+  svg {
+    width: 2.6rem;
+    height: 3.5rem;
+  }
+
+  span {
+    width: 100%;
+    max-width: 22.5rem;
+    margin: 0 auto;
+    text-align: center;
     ${textM}
   }
 `;

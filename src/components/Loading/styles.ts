@@ -28,14 +28,43 @@ export const ImgBox = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 1;
-  animation: LoadingAnimation 0.2s ease infinite;
+  animation: LoadingAnimation 1s ease-in-out infinite;
+  position: relative;
+  width: 10rem;
+  height: auto;
+
+  &::before {
+    content: "";
+    width: 15rem;
+    height: 15rem;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-top: 5px solid ${(props) => props.theme.blue};
+    border-radius: 50%;
+    z-index: -1;
+    animation: Rotating 0.3s ease-in-out infinite;
+  }
 
   @keyframes LoadingAnimation {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes Rotating {
     from {
-      opacity: 0.5;
+      transform: translate(-50%, -50%) rotate(0deg); /* Rotate around its own axis */
     }
     to {
-      opacity: 1;
+      transform: translate(-50%, -50%) rotate(360deg); /* Rotate around its own axis */
     }
   }
 `;

@@ -58,3 +58,8 @@ export const ButtonSubmit = styled.button`
     border: 1px solid ${(props) => props.theme.white};
   }
 `;
+
+export const ErrorMessageForm = styled.span`
+  color: ${(props) => props.theme["base-span"]};
+  text-decoration: underline;
+`;

@@ -42,7 +42,9 @@ export const PostHeader = styled.header`
   footer {
     display: flex;
     align-items: center;
-    gap: 3.2rem;
+    column-gap: 3.2rem;
+    row-gap: 1.6rem;
+    flex-wrap: wrap;
 
     .icon {
       display: flex;
@@ -59,6 +61,12 @@ export const PostHeader = styled.header`
         font-size: 1.8rem;
         color: ${(props) => props.theme["base-label"]};
       }
+    }
+  }
+
+  @media (max-width: 768px) {
+    footer {
+      margin-top: 1.2rem;
     }
   }
 `;
@@ -107,5 +115,9 @@ export const PostContent = styled.div`
   img {
     border-radius: 8px;
     margin: 2rem 0 4rem 0;
+  }
+
+  @media (max-width: 540px) {
+    padding: 4rem 1.2rem;
   }
 `;

@@ -6,12 +6,14 @@ import {
   SearchPostForm,
   ProfileCard,
   SearchInputForm,
+  NoIssueFoundArea,
 } from "./styles";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpRightFromSquare,
   faBuilding,
+  faFileExcel,
   faUserGroup,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
@@ -31,20 +33,28 @@ const searchIssueFormSchema = zod.object({
 
 type searchIssueFormInput = zod.infer<typeof searchIssueFormSchema>;
 
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+
 export function Profile() {
   const { username, repository } = useParams<{
     username: string;
     repository: string;
   }>();
 
-  const { isLoading, fetchIssues, fetchIssueQuery } = useContext(UserContext);
-
   const { pathname } = useLocation();
 
-  const { fetchUserDetails, userDetails, issues, issuesAmount } =
-    useContext(UserContext);
+  const {
+    fetchUserDetails,
+    userDetails,
+    fetchIssues,
+    fetchIssueQuery,
+    issues,
+    issuesAmount,
+    isLoading,
+  } = useContext(UserContext);
 
-  const { register, handleSubmit, reset } = useForm<searchIssueFormInput>({
+  const { register, handleSubmit } = useForm<searchIssueFormInput>({
     resolver: zodResolver(searchIssueFormSchema),
   });
 
@@ -113,21 +123,21 @@ export function Profile() {
                 </div>
               </ProfileCard>
             ) : (
-              <div>Limite de requisições diárias esgotado...</div>
+              <ProfileCard>
+                <p>Perfil não encontrado!</p>
+              </ProfileCard>
             )}
 
-            {issues && (
+            {issues.length !== 0 ? (
               <>
                 <SearchPostForm onSubmit={handleSubmit(handleSearchIssueForm)}>
                   <div className="top">
-                    <label htmlFor="searchInput">Publicações</label>
+                    <label htmlFor="query">Publicações</label>
                     <span>{issuesAmount} publicações</span>
                   </div>
 
                   <SearchInputForm
                     type="text"
-                    name="searchInput"
-                    id=""
                     placeholder="Buscar conteúdo"
                     {...register("query")}
                   />
@@ -147,7 +157,12 @@ export function Profile() {
                         <PostCard>
                           <header>
                             <h3>{issue.title}</h3>
-                            <span>Há 1 dia</span>
+                            <span>
+                              {formatDistanceToNow(issue.updated_at, {
+                                locale: ptBR,
+                                addSuffix: true,
+                              })}
+                            </span>
                           </header>
 
                           <p>{bodyPreview}...</p>
@@ -157,6 +172,13 @@ export function Profile() {
                   })}
                 </Posts>
               </>
+            ) : (
+              <NoIssueFoundArea>
+                <FontAwesomeIcon icon={faFileExcel} />
+                <span>
+                  Não encontramos nenhuma issue para esse repositório...
+                </span>
+              </NoIssueFoundArea>
             )}
           </ContainerBox>
         </ProfileSection>

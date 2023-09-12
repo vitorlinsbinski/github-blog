@@ -12,7 +12,6 @@ import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { Link, useParams } from "react-router-dom";
 
 import ReactMarkdown from "react-markdown";
-//import remarkGfm from "remark-gfm";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
@@ -21,17 +20,19 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/ProfileContext";
 import { Loading } from "../../components/Loading";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 const BASE_ISSUE_DETAILS_URL = "https://api.github.com";
 
 interface IssueDetailedType {
   comments: number;
-  createdAt: string;
+  createdAt: Date;
   url: string;
   id: number;
   number: number;
   title: string;
-  updated_at: string;
+  updated_at: Date;
   body: string;
   user: string;
 }
@@ -51,12 +52,12 @@ export function Post() {
 
       const issueDetailedData = {
         comments: data.comments,
-        createdAt: data.createdAt,
+        createdAt: new Date(data.createdAt),
         url: data.html_url,
         id: data.id,
         number: data.number,
         title: data.title,
-        updated_at: data.updated_at,
+        updated_at: new Date(data.updated_at),
         body: data.body,
         user: data.user.login,
       };
@@ -112,7 +113,12 @@ export function Post() {
                     </div>
                     <div className="icon">
                       <FontAwesomeIcon icon={faCalendarDay} />{" "}
-                      <span>Há 1 dia</span>
+                      <span>
+                        {formatDistanceToNow(issueDetailed.updated_at, {
+                          locale: ptBR,
+                          addSuffix: true,
+                        })}
+                      </span>
                     </div>
                     <div className="icon">
                       <FontAwesomeIcon icon={faComment} />{" "}
