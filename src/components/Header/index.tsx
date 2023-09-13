@@ -2,17 +2,21 @@ import { ContainerBox } from "../../styles/container";
 
 import logoGithubBlog from "../../assets/logo-githublog.svg";
 
-import { HeaderComponent } from "./styles";
+import { HeaderComp } from "./styles";
 import { Link } from "react-router-dom";
 
-export function Header() {
+import { memo } from "react";
+
+function HeaderComponent() {
   return (
-    <HeaderComponent>
+    <HeaderComp>
       <ContainerBox>
         <Link to="/">
           <img src={logoGithubBlog} alt="" />
         </Link>
       </ContainerBox>
-    </HeaderComponent>
+    </HeaderComp>
   );
 }
+
+export const Header = memo(HeaderComponent);

@@ -1,6 +1,8 @@
-import { ReactNode, createContext, useState } from "react";
+import { ReactNode, useState, useCallback } from "react";
 
 import { api } from "../lib/axios";
+
+import { createContext } from "use-context-selector";
 
 interface UserContextProviderProps {
   children: ReactNode;
@@ -89,152 +91,169 @@ export function UserProvider({ children }: UserContextProviderProps) {
     user: { login: "" },
   });
 
-  async function fetchUserDetails(username: string) {
-    showLoading();
-
-    try {
-      const response = await api.get(`users/${username}`);
-      setUserDetails(response.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      removeLoading();
-    }
-  }
-
-  async function fetchIssues(username: string, repository: string) {
-    showLoading();
-    setIssues([]);
-    try {
-      const { data } = await api.get(
-        `/search/issues?q=repo:${username}/${repository}`
-      );
-
-      const issuesData = data.items.map(
-        ({
-          comments,
-          created_at,
-          url,
-          id,
-          number,
-          title,
-          updated_at,
-          body,
-          user,
-        }: IssueType) => {
-          return {
-            comments,
-            created_at: new Date(created_at),
-            url,
-            id,
-            number,
-            title,
-            updated_at: new Date(updated_at),
-            body,
-            user,
-          };
-        }
-      );
-
-      setIssues(issuesData);
-      setIssuesAmount(data.total_count);
-
-      console.log("issuesData", issuesData);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      removeLoading();
-    }
-  }
-
-  async function fetchIssueQuery(
-    username: string,
-    repository: string,
-    query: string
-  ) {
-    try {
-      const encodedQuery = encodeURIComponent(query);
-
-      const { data } = await api.get(
-        `/search/issues?q=${encodedQuery}%20repo:${username}/${repository}`
-      );
-
-      const issuesData = data.items.map(
-        ({
-          comments,
-          created_at,
-          url,
-          id,
-          number,
-          title,
-          updated_at,
-          body,
-          user: user,
-        }: IssueType) => {
-          return {
-            comments,
-            created_at: new Date(created_at),
-            url,
-            id,
-            number,
-            title,
-            updated_at: new Date(updated_at),
-            body,
-            user,
-          };
-        }
-      );
-
-      setIssues(issuesData);
-      setIssuesAmount(data.total_count);
-
-      console.log("DATAAAA", data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function fetchIssueDetails(
-    username: string,
-    repository: string,
-    issue: number
-  ) {
-    showLoading();
-
-    try {
-      const { data } = await api.get(
-        `/repos/${username}/${repository}/issues/${issue}`
-      );
-
-      const issueDetailedData = {
-        comments: data.comments,
-        created_at: new Date(data.createdAt),
-        url: data.html_url,
-        id: data.id,
-        number: data.number,
-        title: data.title,
-        updated_at: new Date(data.updated_at),
-        body: data.body,
-        user: data.user.login,
-      };
-
-      setIssueDetailed(issueDetailedData);
-
-      console.log(issueDetailedData);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      removeLoading();
-    }
-  }
-
-  function showLoading() {
+  const showLoading = useCallback(() => {
     setIsLoading(true);
-  }
+  }, []);
 
-  function removeLoading() {
+  const removeLoading = useCallback(() => {
     setIsLoading(false);
-  }
+  }, []);
+
+  const fetchUserDetails = useCallback(
+    async (username: string) => {
+      showLoading();
+
+      try {
+        const response = await api.get(`users/${username}`, {
+          headers: {
+            authorization: "Bearer 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",
+          },
+        });
+        setUserDetails(response.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        removeLoading();
+      }
+    },
+    [removeLoading, showLoading]
+  );
+
+  const fetchIssues = useCallback(
+    async (username: string, repository: string) => {
+      showLoading();
+      setIssues([]);
+      try {
+        const { data } = await api.get(
+          `/search/issues?q=repo:${username}/${repository}`,
+          {
+            headers: {
+              authorization: "Bearer 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",
+            },
+          }
+        );
+
+        const issuesData = data.items.map(
+          ({
+            comments,
+            created_at,
+            url,
+            id,
+            number,
+            title,
+            updated_at,
+            body,
+            user,
+          }: IssueType) => {
+            return {
+              comments,
+              created_at: new Date(created_at),
+              url,
+              id,
+              number,
+              title,
+              updated_at: new Date(updated_at),
+              body,
+              user,
+            };
+          }
+        );
+
+        setIssues(issuesData);
+        setIssuesAmount(data.total_count);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        removeLoading();
+      }
+    },
+    [removeLoading, showLoading]
+  );
+
+  const fetchIssueQuery = useCallback(
+    async (username: string, repository: string, query: string) => {
+      try {
+        const encodedQuery = encodeURIComponent(query);
+
+        const { data } = await api.get(
+          `/search/issues?q=${encodedQuery}%20repo:${username}/${repository}`,
+          {
+            headers: {
+              authorization: "Bearer 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",
+            },
+          }
+        );
+
+        const issuesData = data.items.map(
+          ({
+            comments,
+            created_at,
+            url,
+            id,
+            number,
+            title,
+            updated_at,
+            body,
+            user: user,
+          }: IssueType) => {
+            return {
+              comments,
+              created_at: new Date(created_at),
+              url,
+              id,
+              number,
+              title,
+              updated_at: new Date(updated_at),
+              body,
+              user,
+            };
+          }
+        );
+
+        setIssues(issuesData);
+        setIssuesAmount(data.total_count);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    []
+  );
+
+  const fetchIssueDetails = useCallback(
+    async (username: string, repository: string, issue: number) => {
+      showLoading();
+
+      try {
+        const { data } = await api.get(
+          `/repos/${username}/${repository}/issues/${issue}`,
+          {
+            headers: {
+              authorization: "Bearer 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",
+            },
+          }
+        );
+
+        const issueDetailedData = {
+          comments: data.comments,
+          created_at: new Date(data.createdAt),
+          url: data.html_url,
+          id: data.id,
+          number: data.number,
+          title: data.title,
+          updated_at: new Date(data.updated_at),
+          body: data.body,
+          user: data.user,
+        };
+
+        setIssueDetailed(issueDetailedData);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        removeLoading();
+      }
+    },
+    [removeLoading, showLoading]
+  );
 
   return (
     <UserContext.Provider

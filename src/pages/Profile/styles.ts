@@ -177,6 +177,7 @@ export const PostCard = styled.div`
   max-width: 41.6rem;
   border-radius: 10px;
 
+  min-height: 26rem;
   max-height: 26rem;
 
   overflow: hidden;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import headerBg from "../../assets/header-bg.png";
 
-export const HeaderComponent = styled.header`
+export const HeaderComp = styled.header`
   background-image: url(${headerBg});
   background-repeat: no-repeat;
   background-size: cover;

@@ -9,38 +9,46 @@ import { PostContent, PostHeader, PostSection } from "./styles";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useLocation } from "react-router-dom";
 
 import ReactMarkdown from "react-markdown";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
-import hightlightStyle from "../../hightlightStyle";
-import { useContext, useEffect } from "react";
+import customSyntaxHighlighterStyle from "../../customSyntaxHighlighterStyle";
+
+import { useEffect } from "react";
 import { UserContext } from "../../contexts/ProfileContext";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Loading } from "../../components/Loading";
 
+import { useContextSelector } from "use-context-selector";
+
 export function Post() {
   const { username, repository, issue } = useParams();
 
+  // const { issues, fetchIssueDetails, issueDetailed, isLoading } =
+  //   useContext(UserContext);
+
   const { issues, fetchIssueDetails, issueDetailed, isLoading } =
-    useContext(UserContext);
+    useContextSelector(UserContext, (context) => context);
 
   const issueNumber = issues.find(
     (issueItem) => issueItem.number == Number(issue)
   );
 
+  const { pathname } = useLocation();
+
   useEffect(() => {
-    if (issueNumber) {
-      return;
-    } else {
-      if (username && repository && issue) {
-        fetchIssueDetails(username, repository, Number(issue));
-      }
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!issueNumber && username && repository && issue) {
+      fetchIssueDetails(username, repository, Number(issue));
     }
-  }, []);
+  }, [fetchIssueDetails, issueNumber, username, repository, issue]);
 
   return (
     <>
@@ -97,8 +105,9 @@ export function Post() {
                           <SyntaxHighlighter
                             {...props}
                             children={String(children).replace(/\n$/, "")}
-                            style={hightlightStyle}
                             language={match[1]}
+                            style={customSyntaxHighlighterStyle}
+                            {...props}
                           />
                         ) : (
                           <code {...props} className={className}>
@@ -159,7 +168,7 @@ export function Post() {
                             <SyntaxHighlighter
                               {...props}
                               children={String(children).replace(/\n$/, "")}
-                              style={hightlightStyle}
+                              style={customSyntaxHighlighterStyle}
                               language={match[1]}
                             />
                           ) : (

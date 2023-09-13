@@ -1,7 +1,9 @@
 import logoImg from "../../assets/logo-githublog.svg";
 import { ImgBox, LoadingContainer, Overlay } from "./styles";
 
-export function Loading() {
+import { memo } from "react";
+
+function LoadingComponent() {
   return (
     <LoadingContainer>
       <Overlay></Overlay>
@@ -12,3 +14,5 @@ export function Loading() {
     </LoadingContainer>
   );
 }
+
+export const Loading = memo(LoadingComponent);

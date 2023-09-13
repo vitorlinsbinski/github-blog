@@ -18,7 +18,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { Link, useParams, useLocation } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 
 import { Loading } from "../../components/Loading";
 import { UserContext } from "../../contexts/ProfileContext";
@@ -26,6 +26,8 @@ import { UserContext } from "../../contexts/ProfileContext";
 import * as zod from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { useContextSelector } from "use-context-selector";
 
 const searchIssueFormSchema = zod.object({
   query: zod.string(),
@@ -37,22 +39,32 @@ import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 export function Profile() {
+  const { pathname } = useLocation();
+
   const { username, repository } = useParams<{
     username: string;
     repository: string;
   }>();
 
-  const { pathname } = useLocation();
+  // const {
+  //   fetchUserDetails,
+  //   userDetails,
+  //   fetchIssues,
+  //   fetchIssueQuery,
+  //   issues,
+  //   issuesAmount,
+  //   isLoading,
+  // } = useContext(UserContext);
 
   const {
     fetchUserDetails,
     userDetails,
     fetchIssues,
-    fetchIssueQuery,
     issues,
     issuesAmount,
+    fetchIssueQuery,
     isLoading,
-  } = useContext(UserContext);
+  } = useContextSelector(UserContext, (context) => context);
 
   const { register, handleSubmit } = useForm<searchIssueFormInput>({
     resolver: zodResolver(searchIssueFormSchema),
@@ -65,17 +77,11 @@ export function Profile() {
   }
 
   useEffect(() => {
-    if (userDetails) {
-      if (username && repository) {
-        fetchUserDetails(username);
-        fetchIssues(username, repository);
-        console.log(userDetails);
-      }
-    } else {
-      console.log("oi");
-      return;
+    if (userDetails && username && repository) {
+      fetchUserDetails(username);
+      fetchIssues(username, repository);
     }
-  }, []);
+  }, [fetchUserDetails, fetchIssues]);
 
   return (
     <>
@@ -128,22 +134,22 @@ export function Profile() {
               </ProfileCard>
             )}
 
+            <SearchPostForm onSubmit={handleSubmit(handleSearchIssueForm)}>
+              <div className="top">
+                <label htmlFor="query">Publicações</label>
+                <span>{issuesAmount} publicações</span>
+              </div>
+
+              <SearchInputForm
+                type="text"
+                id="query"
+                placeholder="Buscar conteúdo"
+                {...register("query")}
+              />
+            </SearchPostForm>
+
             {issues.length !== 0 ? (
               <>
-                <SearchPostForm onSubmit={handleSubmit(handleSearchIssueForm)}>
-                  <div className="top">
-                    <label htmlFor="query">Publicações</label>
-                    <span>{issuesAmount} publicações</span>
-                  </div>
-
-                  <SearchInputForm
-                    type="text"
-                    id="query"
-                    placeholder="Buscar conteúdo"
-                    {...register("query")}
-                  />
-                </SearchPostForm>
-
                 <Posts>
                   {issues.map((issue) => {
                     const bodyPreview = issue.body
@@ -177,7 +183,8 @@ export function Profile() {
               <NoIssueFoundArea>
                 <FontAwesomeIcon icon={faFileExcel} />
                 <span>
-                  Não encontramos nenhuma issue para esse repositório...
+                  Não encontramos nenhuma issue para esse repositório ou
+                  filtro...
                 </span>
               </NoIssueFoundArea>
             )}
