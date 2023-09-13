@@ -27,7 +27,7 @@ interface IssueType {
   title: string;
   updated_at: Date;
   body: string;
-  user: string;
+  user: { login: string };
 }
 
 interface UserContextType {
@@ -47,6 +47,13 @@ interface UserContextType {
     username: string,
     repository: string,
     query: string
+  ) => Promise<void>;
+
+  issueDetailed: IssueType;
+  fetchIssueDetails: (
+    username: string,
+    repository: string,
+    issue: number
   ) => Promise<void>;
 }
 
@@ -69,6 +76,18 @@ export function UserProvider({ children }: UserContextProviderProps) {
 
   const [issues, setIssues] = useState<IssueType[]>([]);
   const [issuesAmount, setIssuesAmount] = useState(0);
+
+  const [issueDetailed, setIssueDetailed] = useState<IssueType>({
+    comments: 0,
+    created_at: new Date(),
+    body: "",
+    id: 0,
+    number: 0,
+    title: "",
+    updated_at: new Date(),
+    url: "",
+    user: { login: "" },
+  });
 
   async function fetchUserDetails(username: string) {
     showLoading();
@@ -140,10 +159,6 @@ export function UserProvider({ children }: UserContextProviderProps) {
         `/search/issues?q=${encodedQuery}%20repo:${username}/${repository}`
       );
 
-      console.log(
-        `/search/issues?q=${encodedQuery}%20repo:${username}/${repository}`
-      );
-
       const issuesData = data.items.map(
         ({
           comments,
@@ -154,7 +169,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
           title,
           updated_at,
           body,
-          user,
+          user: user,
         }: IssueType) => {
           return {
             comments,
@@ -179,6 +194,40 @@ export function UserProvider({ children }: UserContextProviderProps) {
     }
   }
 
+  async function fetchIssueDetails(
+    username: string,
+    repository: string,
+    issue: number
+  ) {
+    showLoading();
+
+    try {
+      const { data } = await api.get(
+        `/repos/${username}/${repository}/issues/${issue}`
+      );
+
+      const issueDetailedData = {
+        comments: data.comments,
+        created_at: new Date(data.createdAt),
+        url: data.html_url,
+        id: data.id,
+        number: data.number,
+        title: data.title,
+        updated_at: new Date(data.updated_at),
+        body: data.body,
+        user: data.user.login,
+      };
+
+      setIssueDetailed(issueDetailedData);
+
+      console.log(issueDetailedData);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      removeLoading();
+    }
+  }
+
   function showLoading() {
     setIsLoading(true);
   }
@@ -199,6 +248,8 @@ export function UserProvider({ children }: UserContextProviderProps) {
         fetchIssues,
         issuesAmount,
         fetchIssueQuery,
+        issueDetailed,
+        fetchIssueDetails,
       }}
     >
       {children}

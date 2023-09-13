@@ -138,6 +138,7 @@ export function Profile() {
 
                   <SearchInputForm
                     type="text"
+                    id="query"
                     placeholder="Buscar conteúdo"
                     {...register("query")}
                   />

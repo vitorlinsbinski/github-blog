@@ -16,66 +16,30 @@ import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 import hightlightStyle from "../../hightlightStyle";
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../contexts/ProfileContext";
-import { Loading } from "../../components/Loading";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
-
-const BASE_ISSUE_DETAILS_URL = "https://api.github.com";
-
-interface IssueDetailedType {
-  comments: number;
-  createdAt: Date;
-  url: string;
-  id: number;
-  number: number;
-  title: string;
-  updated_at: Date;
-  body: string;
-  user: string;
-}
+import { Loading } from "../../components/Loading";
 
 export function Post() {
   const { username, repository, issue } = useParams();
 
-  const [issueDetailed, setIssueDetailed] = useState<IssueDetailedType>();
+  const { issues, fetchIssueDetails, issueDetailed, isLoading } =
+    useContext(UserContext);
 
-  async function fetchIssueDetails() {
-    showLoading();
-
-    try {
-      const { data } = await axios.get(
-        `${BASE_ISSUE_DETAILS_URL}/repos/${username}/${repository}/issues/${issue}`
-      );
-
-      const issueDetailedData = {
-        comments: data.comments,
-        createdAt: new Date(data.createdAt),
-        url: data.html_url,
-        id: data.id,
-        number: data.number,
-        title: data.title,
-        updated_at: new Date(data.updated_at),
-        body: data.body,
-        user: data.user.login,
-      };
-
-      setIssueDetailed(issueDetailedData);
-
-      console.log(issueDetailedData);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      removeLoading();
-    }
-  }
-
-  const { isLoading, removeLoading, showLoading } = useContext(UserContext);
+  const issueNumber = issues.find(
+    (issueItem) => issueItem.number == Number(issue)
+  );
 
   useEffect(() => {
-    fetchIssueDetails();
+    if (issueNumber) {
+      return;
+    } else {
+      if (username && repository && issue) {
+        fetchIssueDetails(username, repository, Number(issue));
+      }
+    }
   }, []);
 
   return (
@@ -85,36 +49,32 @@ export function Post() {
       ) : (
         <PostSection>
           <ContainerBox>
-            {issueDetailed && (
+            {issueNumber ? (
               <>
                 <PostHeader>
                   <nav>
                     <Link to={`/${username}/${repository}`}>
-                      <a
-                        href={`${BASE_ISSUE_DETAILS_URL}/repos/${username}/${repository}`}
-                      >
-                        <FontAwesomeIcon icon={faChevronLeft} />
-                        VOLTAR
-                      </a>
+                      <FontAwesomeIcon icon={faChevronLeft} />
+                      VOLTAR
                     </Link>
 
-                    <a href={issueDetailed.url}>
+                    <a href={issueNumber.url}>
                       VER NO GITHUB{" "}
                       <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
                     </a>
                   </nav>
 
-                  <h1>{issueDetailed.title}</h1>
+                  <h1>{issueNumber.title}</h1>
 
                   <footer>
                     <div className="icon">
                       <FontAwesomeIcon icon={faGithub} />{" "}
-                      <span>{issueDetailed.user}</span>
+                      <span>{issueNumber.user.login}</span>
                     </div>
                     <div className="icon">
                       <FontAwesomeIcon icon={faCalendarDay} />{" "}
                       <span>
-                        {formatDistanceToNow(issueDetailed.updated_at, {
+                        {formatDistanceToNow(issueNumber.updated_at, {
                           locale: ptBR,
                           addSuffix: true,
                         })}
@@ -122,14 +82,14 @@ export function Post() {
                     </div>
                     <div className="icon">
                       <FontAwesomeIcon icon={faComment} />{" "}
-                      <span>{issueDetailed.comments} comentários</span>
+                      <span>{issueNumber.comments} comentários</span>
                     </div>
                   </footer>
                 </PostHeader>
 
                 <PostContent>
                   <ReactMarkdown
-                    children={issueDetailed.body}
+                    children={issueNumber.body}
                     components={{
                       code({ inline, className, children, ...props }) {
                         const match = /language-(\w+)/.exec(className || "");
@@ -150,6 +110,69 @@ export function Post() {
                   />
                 </PostContent>
               </>
+            ) : (
+              issueDetailed && (
+                <>
+                  <PostHeader>
+                    <nav>
+                      <Link to={`/${username}/${repository}`}>
+                        <FontAwesomeIcon icon={faChevronLeft} />
+                        VOLTAR
+                      </Link>
+
+                      <a href={issueDetailed.url}>
+                        VER NO GITHUB{" "}
+                        <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
+                      </a>
+                    </nav>
+
+                    <h1>{issueDetailed.title}</h1>
+
+                    <footer>
+                      <div className="icon">
+                        <FontAwesomeIcon icon={faGithub} />{" "}
+                        <span>{issueDetailed.user.login}</span>
+                      </div>
+                      <div className="icon">
+                        <FontAwesomeIcon icon={faCalendarDay} />{" "}
+                        <span>
+                          {formatDistanceToNow(issueDetailed.updated_at, {
+                            locale: ptBR,
+                            addSuffix: true,
+                          })}
+                        </span>
+                      </div>
+                      <div className="icon">
+                        <FontAwesomeIcon icon={faComment} />{" "}
+                        <span>{issueDetailed.comments} comentários</span>
+                      </div>
+                    </footer>
+                  </PostHeader>
+
+                  <PostContent>
+                    <ReactMarkdown
+                      children={issueDetailed.body}
+                      components={{
+                        code({ inline, className, children, ...props }) {
+                          const match = /language-(\w+)/.exec(className || "");
+                          return !inline && match ? (
+                            <SyntaxHighlighter
+                              {...props}
+                              children={String(children).replace(/\n$/, "")}
+                              style={hightlightStyle}
+                              language={match[1]}
+                            />
+                          ) : (
+                            <code {...props} className={className}>
+                              {children}
+                            </code>
+                          );
+                        },
+                      }}
+                    />
+                  </PostContent>
+                </>
+              )
             )}
           </ContainerBox>
         </PostSection>
