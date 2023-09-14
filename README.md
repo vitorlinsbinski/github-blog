@@ -26,13 +26,14 @@
 - [Running the application](#running-the-application)
 - [Main Technologies](#main-technologies)
 - [Final Result](#final-result)
-- [Home page](#home-page)
-- [Profile page](#profile-page)
-- [Profile page with issue filter](#profile-page-with-issue-filter)
-- [Issue post page](#issue-post-page)
+  - [Home page](#home-page)
+  - [Profile page](#profile-page)
+  - [Profile page with issue filter](#profile-page-with-issue-filter)
+  - [Issue post page](#issue-post-page)
 - [Deploy](#deploy)
 - [License](#license)
 - [Author](#author)
+- [Contributing Guidelines](#contributing-guidelines)
 
 ## Features
 
