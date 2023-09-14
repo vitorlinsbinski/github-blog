@@ -122,7 +122,7 @@ Read and create issue posts in Markdown format. Enjoy rich text formatting optio
 
 ## Deploy
 
-Check out the project: https://desafio-github-blog-5fhvs5h4z-vitorlinsbinski.vercel.app/vitorlinsbinski/github-blog
+Check out the project working: https://desafio-github-blog-5fhvs5h4z-vitorlinsbinski.vercel.app/
 
 ## Contributing Guidelines
 
