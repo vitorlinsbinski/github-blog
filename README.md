@@ -11,7 +11,7 @@
 
 <img src = "https://img.shields.io/static/v1?label=ReactJS&message=v18.2.0&color=blue&style=plastic&logo="/>
 
-# <img src = "https://img.shields.io/static/v1?label=TypeScript&message=v5.0.2&color=blue&style=plastic&logo="/>
+<img src = "https://img.shields.io/static/v1?label=TypeScript&message=v5.0.2&color=blue&style=plastic&logo="/>
 
 <h4 align="center"> 
 	GitHub Blog | Status: Done ✔️
@@ -31,7 +31,7 @@
 
 ```bash
     # Clone this repository on your machine:
-    $ git clone https://github.com/vitorlinsbinski/dt-money.git
+    $ git clone https://github.com/vitorlinsbinski/github-blog.git
 
     # Access the project folder in your terminal:
     $ cd github-blog
