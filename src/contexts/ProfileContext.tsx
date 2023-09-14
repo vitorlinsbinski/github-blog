@@ -104,11 +104,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
       showLoading();
 
       try {
-        const response = await api.get(`users/${username}`, {
-          headers: {
-            authorization: "Bearer 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",
-          },
-        });
+        const response = await api.get(`users/${username}`);
         setUserDetails(response.data);
       } catch (error) {
         console.log(error);
@@ -125,12 +121,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
       setIssues([]);
       try {
         const { data } = await api.get(
-          `/search/issues?q=repo:${username}/${repository}`,
-          {
-            headers: {
-              authorization: "Bearer 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",
-            },
-          }
+          `/search/issues?q=repo:${username}/${repository}`
         );
 
         const issuesData = data.items.map(
@@ -176,12 +167,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
         const encodedQuery = encodeURIComponent(query);
 
         const { data } = await api.get(
-          `/search/issues?q=${encodedQuery}%20repo:${username}/${repository}`,
-          {
-            headers: {
-              authorization: "Bearer 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",
-            },
-          }
+          `/search/issues?q=${encodedQuery}%20repo:${username}/${repository}`
         );
 
         const issuesData = data.items.map(
@@ -225,12 +211,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
 
       try {
         const { data } = await api.get(
-          `/repos/${username}/${repository}/issues/${issue}`,
-          {
-            headers: {
-              authorization: "Bearer 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",
-            },
-          }
+          `/repos/${username}/${repository}/issues/${issue}`
         );
 
         const issueDetailedData = {

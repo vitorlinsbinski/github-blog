@@ -1,4 +1,6 @@
-const customSyntaxHighlighterStyle = {
+export const customSyntaxHighlighterStyle: {
+  [key: string]: React.CSSProperties;
+} = {
   'code[class*="language-"]': {
     color: "#c5c8c6",
     textShadow: "0 1px rgba(0, 0, 0, 0.3)",
@@ -63,7 +65,7 @@ const customSyntaxHighlighterStyle = {
     color: "#c5c8c6",
   },
   ".namespace": {
-    Opacity: ".7",
+    opacity: ".7",
   },
   property: {
     color: "#96CBFE",
@@ -153,5 +155,3 @@ const customSyntaxHighlighterStyle = {
     fontStyle: "italic",
   },
 };
-
-export default customSyntaxHighlighterStyle;

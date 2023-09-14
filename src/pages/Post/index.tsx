@@ -15,8 +15,6 @@ import ReactMarkdown from "react-markdown";
 
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
-import customSyntaxHighlighterStyle from "../../customSyntaxHighlighterStyle";
-
 import { useEffect } from "react";
 import { UserContext } from "../../contexts/ProfileContext";
 import { formatDistanceToNow } from "date-fns";
@@ -24,6 +22,10 @@ import { ptBR } from "date-fns/locale";
 import { Loading } from "../../components/Loading";
 
 import { useContextSelector } from "use-context-selector";
+
+import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+
+import { customSyntaxHighlighterStyle } from "../../customStyles/customSyntaxHighlighterStyle";
 
 export function Post() {
   const { username, repository, issue } = useParams();
@@ -106,8 +108,7 @@ export function Post() {
                             {...props}
                             children={String(children).replace(/\n$/, "")}
                             language={match[1]}
-                            style={customSyntaxHighlighterStyle}
-                            {...props}
+                            style={oneDark}
                           />
                         ) : (
                           <code {...props} className={className}>
