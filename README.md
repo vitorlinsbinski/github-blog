@@ -1,4 +1,6 @@
-<img src = "./src/assets/logo-githublog.svg" align = "center"/>
+<div align="center">
+  <img src="./src/assets/logo-favicon.svg" />
+</div>
 
 <h1 align = "center">GitHub Blog</h1>
 <p>A blog to check out all of your repositories and profile informations from GitHub. This project is gonna be using the GitHub API</p>
