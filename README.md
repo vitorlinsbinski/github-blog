@@ -3,7 +3,7 @@
 </div>
 
 <h1 align = "center">GitHub Blog</h1>
-<p>A blog to check out all of your repositories and profile informations from GitHub. This project is gonna be using the GitHub API</p>
+<p>A blog to check out all of your issues from a repository and profile information from GitHub. This project uses the GitHub API</p>
 
 <div align="center">
   <div style="display: flex; justify-content: space-between; align-items: center;">
