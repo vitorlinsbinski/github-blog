@@ -34,13 +34,10 @@
     $ git clone https://github.com/vitorlinsbinski/dt-money.git
 
     # Access the project folder in your terminal:
-    $ cd dt-money
+    $ cd github-blog
 
     # Install all dependencies:
     $ npm install
-
-    # Initialize JSON Server with these parameters: -w for watching each HTTP request and -d for the delay in microseconds:
-    $ npx json-server server.json -w -d 350
 
     # Run the application:
     $ npm run dev
