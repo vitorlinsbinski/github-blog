@@ -5,12 +5,14 @@
 <h1 align = "center">GitHub Blog</h1>
 <p>A blog to check out all of your repositories and profile informations from GitHub. This project is gonna be using the GitHub API</p>
 
-<div style="display: flex; justify-content: space-between; align-items: center;">
+<div align="center">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
     <img src="https://img.shields.io/static/v1?label=node&message=v18.17.1&color=blue&style=plastic&logo="/>
     <img src="https://img.shields.io/static/v1?label=npm&message=v9.6.7&color=blue&style=plastic&logo="/>
     <img src="https://img.shields.io/static/v1?label=Vite&message=v4.4.5&color=blue&style=plastic&logo="/>
     <img src="https://img.shields.io/static/v1?label=ReactJS&message=v18.2.0&color=blue&style=plastic&logo="/>
     <img src="https://img.shields.io/static/v1?label=TypeScript&message=v5.0.2&color=blue&style=plastic&logo="/>
+  </div>
 </div>
 
 <h4 align="center"> 
