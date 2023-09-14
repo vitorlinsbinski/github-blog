@@ -119,6 +119,8 @@ export function UserProvider({ children }: UserContextProviderProps) {
     async (username: string, repository: string) => {
       showLoading();
       setIssues([]);
+      setIssuesAmount(0);
+
       try {
         const { data } = await api.get(
           `/search/issues?q=repo:${username}/${repository}`
