@@ -19,6 +19,21 @@
 	GitHub Blog | Status: Done ✔️
 </h4>
 
+## Table of Contents
+
+- [Features](#features)
+- [Requirements to run the project](#requirements-to-run-the-project)
+- [Running the application](#running-the-application)
+- [Main Technologies](#main-technologies)
+- [Final Result](#final-result)
+- [Home page](#home-page)
+- [Profile page](#profile-page)
+- [Profile page with issue filter](#profile-page-with-issue-filter)
+- [Issue post page](#issue-post-page)
+- [Deploy](#deploy)
+- [License](#license)
+- [Author](#author)
+
 ## Features
 
 - Search for issues in a repository
