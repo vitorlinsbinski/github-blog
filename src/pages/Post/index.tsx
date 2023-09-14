@@ -23,8 +23,6 @@ import { Loading } from "../../components/Loading";
 
 import { useContextSelector } from "use-context-selector";
 
-import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
-
 import { customSyntaxHighlighterStyle } from "../../customStyles/customSyntaxHighlighterStyle";
 
 export function Post() {
@@ -108,7 +106,7 @@ export function Post() {
                             {...props}
                             children={String(children).replace(/\n$/, "")}
                             language={match[1]}
-                            style={oneDark}
+                            style={customSyntaxHighlighterStyle}
                           />
                         ) : (
                           <code {...props} className={className}>
